@@ -16,6 +16,14 @@ class UserCreationSchema(BaseModel):
             raise ValueError('username field cannot be empty')
         return value
     
+    @validator('email')
+    def custom_email_validation(cls, value):
+        if value == '':
+            raise ValueError('email field cannot be empty')
+        if '@' not in value or '.' not in value:
+            raise ValueError('enter valid email')
+        return value
+
     @validator('first_name')
     def non_empty_first_name(cls, value):
         if value == '':
@@ -27,12 +35,19 @@ class UserCreationSchema(BaseModel):
         if value == '':
             raise ValueError('last_name field cannot be empty')
         return value.title()
-    
+
     @validator('password')
     def password_validation(cls, value):
         if len(value) < 6:
             raise ValueError('password is too short')
         return value
+
+
+# Schema for authentication a user
+class UserAuthSchema(BaseModel):
+    id: int
+    username: str
+    email: str
 
 
 # Schema for user display
@@ -59,7 +74,6 @@ class PostOwnerSchema(BaseModel):
 class PostCreationSchema(BaseModel):
     caption: str
     image_url: str
-    owner_id: int
 
 
 # Schema for post display
