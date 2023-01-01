@@ -1,5 +1,6 @@
 from datetime import datetime
 from pydantic import BaseModel, Field, validator
+from typing import List
 
 
 # Schema for creation a user
@@ -70,10 +71,33 @@ class PostOwnerSchema(BaseModel):
         orm_mode = True
 
 
+# Schema for displaying a user in a comment detail
+class CommentAuthorSchema(BaseModel):
+    username: str
+
+    class Config:
+        orm_mode = True
+
+
 # Schema for creation a post
 class PostCreationSchema(BaseModel):
     caption: str
     image_url: str
+
+
+# Schema for creation a comment
+class CommentCreationSchema(BaseModel):
+    text: str
+
+
+# Schema for displaying a comment in a post detail
+class PostCommentSchema(BaseModel):
+    text: str
+    pub_date: datetime
+    author: CommentAuthorSchema
+
+    class Config:
+        orm_mode = True
 
 
 # Schema for post display
@@ -83,6 +107,7 @@ class PostDisplaySchema(BaseModel):
     image_url: str
     pub_date: datetime
     owner: PostOwnerSchema
+    comments: List[PostCommentSchema]
 
     class Config:
         orm_mode = True
