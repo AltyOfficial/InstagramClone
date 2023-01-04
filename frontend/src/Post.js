@@ -7,10 +7,11 @@ import './Post.css'
 const BASE_URL = 'http://localhost:8000/'
 
 
-function Post({ post }) {
+function Post({ post, authToken, authTokenType, userId }) {
 
   const [imageURL, setImageURL] = useState('')
   const [comments, setComments] = useState([])
+  const isAuthor = post.owner.id == userId
 
   useEffect(() => {
     setImageURL(BASE_URL + post.image_url)
@@ -19,6 +20,28 @@ function Post({ post }) {
   useEffect(() => {
     setComments(post.comments)
   }, [])
+
+  const handleDelete = (event) => {
+    event?.preventDefault();
+
+    const requestOption = {
+      method: 'DELETE',
+      headers: new Headers ({
+        'Authorization': authTokenType + ' ' + authToken
+      })
+    }
+
+    fetch(BASE_URL + 'posts/' + post.id, requestOption)
+      .then(response => {
+        if (response.ok) {
+          window.location.reload()
+        }
+        throw response
+      })
+      .catch(error => {
+        console.log(error);
+      })
+  }
 
   return (
     <div className='post'>
@@ -29,13 +52,16 @@ function Post({ post }) {
           src=''
         />
         <div className='post_headerInfo'>
-          <h3>{post.owner.username}</h3>
-          <Button className='post_delete'>Delete</Button>
+          <h3>{post.owner.username} + {isAuthor} {post.owner_id}</h3>
+
+          {userId ? (
+              <Button className='post_delete' onClick={handleDelete}>Delete</Button>
+            ) : (
+              <div>{isAuthor} {post.owner.id} {userId}</div>
+            )
+          }
+
         </div>
-        {/* <div className='post_headerInfo'>
-          <h3>{post.author.username}</h3>
-          <Button className='post_delete'>Delete</Button>
-        </div> */}
       </div>
 
       <img

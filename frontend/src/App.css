@@ -31,3 +31,10 @@
   object-fit: contain;
   width: 180px;
 }
+
+
+.app_signin {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+}
