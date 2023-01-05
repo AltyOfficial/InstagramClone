@@ -45,3 +45,26 @@
     justify-content: space-between;
     margin-left: 10px;
 }
+
+
+.post_comment_box {
+    display: flex;
+    margin-top: 10px;
+}
+
+
+.post_comment_input {
+    flex: 1px;
+    border: none;
+    border-top: 1px solid lightgray;
+    padding: 10px;
+}
+
+
+.post_comment_button {
+    flex: 0;
+    border: none;
+    border-top: 1px solid lightgray;
+    background-color: transparent;
+    color: lightblue;
+}

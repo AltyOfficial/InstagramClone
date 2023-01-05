@@ -53,6 +53,7 @@ class UserAuthSchema(BaseModel):
 
 # Schema for user display
 class UserDisplaySchema(BaseModel):
+    id: int
     username: str
     first_name: str
     last_name: str
@@ -63,6 +64,7 @@ class UserDisplaySchema(BaseModel):
 
 # Schema for displaying a user in a post detail
 class PostOwnerSchema(BaseModel):
+    id: int
     username: str
     first_name: str
     last_name: str

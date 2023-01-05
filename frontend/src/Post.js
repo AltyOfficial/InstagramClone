@@ -9,8 +9,9 @@ const BASE_URL = 'http://localhost:8000/'
 
 function Post({ post, authToken, authTokenType, userId }) {
 
-  const [imageURL, setImageURL] = useState('')
-  const [comments, setComments] = useState([])
+  const [imageURL, setImageURL] = useState('');
+  const [comments, setComments] = useState([]);
+  const [newComment, setNewComment] = useState('');
   const isAuthor = post.owner.id == userId
 
   useEffect(() => {
@@ -43,6 +44,10 @@ function Post({ post, authToken, authTokenType, userId }) {
       })
   }
 
+  const postComment = (event) => {
+    
+  }
+
   return (
     <div className='post'>
 
@@ -52,12 +57,12 @@ function Post({ post, authToken, authTokenType, userId }) {
           src=''
         />
         <div className='post_headerInfo'>
-          <h3>{post.owner.username} + {isAuthor} {post.owner_id}</h3>
+          <h3>{post.owner.username}</h3>
 
-          {userId ? (
+          {isAuthor ? (
               <Button className='post_delete' onClick={handleDelete}>Delete</Button>
             ) : (
-              <div>{isAuthor} {post.owner.id} {userId}</div>
+              <div></div>
             )
           }
 
@@ -83,6 +88,25 @@ function Post({ post, authToken, authTokenType, userId }) {
           ))
         }
       </div>
+
+      {authToken && (
+        <form className='post_comment_box'>
+          <input className='post_comment_input'
+            type='text'
+            placeholder='Add a Comment'
+            value={newComment}
+            onChange={(e) => setNewComment(e.target.value)}
+          />
+          <button
+            className='post_comment_button'
+            type='submit'
+            disabled={!newComment}
+            onClick={postComment}>
+              Post
+          </button>
+        </form>
+      )}
+
     </div>
   )
 }
