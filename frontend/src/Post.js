@@ -25,14 +25,14 @@ function Post({ post, authToken, authTokenType, userId }) {
   const handleDelete = (event) => {
     event?.preventDefault();
 
-    const requestOption = {
+    const requestOptions = {
       method: 'DELETE',
       headers: new Headers ({
         'Authorization': authTokenType + ' ' + authToken
       })
     }
 
-    fetch(BASE_URL + 'posts/' + post.id, requestOption)
+    fetch(BASE_URL + 'posts/' + post.id, requestOptions)
       .then(response => {
         if (response.ok) {
           window.location.reload()
@@ -45,7 +45,57 @@ function Post({ post, authToken, authTokenType, userId }) {
   }
 
   const postComment = (event) => {
-    
+    event?.preventDefault();
+
+    const json_string = JSON.stringify({
+      'text': newComment
+    })
+
+    const requestOptions = {
+      method: 'POST',
+      headers: new Headers ({
+        'Authorization': authTokenType + ' ' + authToken,
+        'Content-Type': 'application/json'
+      }),
+      body: json_string
+    }
+
+    fetch(BASE_URL + 'posts/' + post.id + '/comments/', requestOptions)
+      .then(response => {
+        if (response.ok) {
+          return response.json()
+        }
+      })
+      .then(data => {
+        fetchComments();
+      })
+      .catch(error => {
+        console.log(error)
+      })
+      .finally(() => {
+        setNewComment('');
+      })
+  }
+
+  const fetchComments = () => {
+
+    const requestOptions = {
+      method: 'GET'
+    }
+
+    fetch(BASE_URL + 'posts/' + post.id + '/comments/', requestOptions)
+      .then(response => {
+        if (response.ok) {
+          return response.json();
+        }
+        throw response
+      })
+      .then(data => {
+        setComments(data);
+      })
+      .catch(error => {
+        console.log(error);
+      })
   }
 
   return (

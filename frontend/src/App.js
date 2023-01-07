@@ -52,29 +52,11 @@ function App() {
   const [userId, setUserId] = useState('');
 
   useEffect(() => {
-    setAuthToken(window.localStorage.getItem('authToken'));
-    setAuthTokenType(window.localStorage.getItem('authTokenType'));
-    setUsername(window.localStorage.getItem('username'));
-    setUserId(window.localStorage.getItem('userId'));
+    setAuthToken(localStorage.getItem('authToken'));
+    setAuthTokenType(localStorage.getItem('authTokenType'));
+    setUsername(localStorage.getItem('username'));
+    setUserId(localStorage.getItem('userId'));
   }, [])
-
-  useEffect(() => {
-    authToken
-      ? window.localStorage.setItem('authToken', authToken)
-      : window.localStorage.removeItem('authToken')
-    
-    authTokenType
-      ? window.localStorage.setItem('authTokenType', authTokenType)
-      : window.localStorage.removeItem('authTokenType')
-    
-    username
-      ? window.localStorage.setItem('username', username)
-      : window.localStorage.removeItem('username')
-    
-    userId
-      ? window.localStorage.setItem('userId', userId)
-      : window.localStorage.removeItem('userId')
-  }, [authToken, authTokenType, userId])
 
   useEffect(() => {
     fetch(BASE_URL + 'posts/')

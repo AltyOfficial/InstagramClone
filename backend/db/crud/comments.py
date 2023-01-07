@@ -20,3 +20,8 @@ def create_comment(
     db.commit()
     db.refresh(comment)
     return post
+
+
+def list_of_comments(post_id: int, db: Session):
+    query = db.query(CommentModel).filter(CommentModel.post_id == post_id).all()
+    return query
